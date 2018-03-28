@@ -1199,7 +1199,7 @@ int identify_step_1(
   )
 #endif
     
-    if (outerpoints.size<5)
+    if (outerPoints.size() < 5)
         std::cerr << "outerpoints error";
   
 
