@@ -1200,7 +1200,7 @@ int identify_step_1(
 #endif
     
     if (outerpoints.size<5)
-        std::cerr < "outerpoints error";
+        std::cerr << "outerpoints error";
   
 
   assert ( outerPoints.size() >= 5 );
