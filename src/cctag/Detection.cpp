@@ -126,7 +126,7 @@ static void completeFlowComponent(
   {
     std::list<EdgePoint*> children;
       
-    std::cerr << "cec 1\n"
+    std::cerr << "cec 1\n";
 
     childrenOf(edgeCollection, candidate._convexEdgeSegment, children);
 
@@ -155,7 +155,7 @@ static void completeFlowComponent(
       return;
     }
       
-      std::cerr << "cec 2\n"
+      std::cerr << "cec 2\n";
 
 
     std::size_t nLabel = -1;
@@ -192,7 +192,7 @@ static void completeFlowComponent(
       }
     }
       
-      std::cerr << "cec 3\n"
+      std::cerr << "cec 3\n";
 
 
     std::vector<EdgePoint*> & outerEllipsePoints = candidate._outerEllipsePoints;
@@ -224,7 +224,7 @@ static void completeFlowComponent(
       }
     }
       
-      std::cerr << "cec 4\n"
+      std::cerr << "cec 4\n";
 
 
     SmFinal = numerical::medianRef(vDistFinal);
@@ -254,7 +254,7 @@ static void completeFlowComponent(
       vCandidateLoopTwo.push_back(candidate);
     }
       
-      std::cerr << "cec 5\n"
+      std::cerr << "cec 5\n";
 
 
 #ifdef CCTAG_SERIALIZE
