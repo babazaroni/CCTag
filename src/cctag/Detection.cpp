@@ -125,6 +125,8 @@ static void completeFlowComponent(
   try
   {
     std::list<EdgePoint*> children;
+      
+    std::cerr << "cec 1\n"
 
     childrenOf(edgeCollection, candidate._convexEdgeSegment, children);
 
@@ -152,6 +154,9 @@ static void completeFlowComponent(
       DO_TALK( CCTAG_COUT_DEBUG(" filteredChildren.size() < 5 "); )
       return;
     }
+      
+      std::cerr << "cec 2\n"
+
 
     std::size_t nLabel = -1;
 
@@ -186,6 +191,9 @@ static void completeFlowComponent(
         p->_nSegmentOut = nLabel;
       }
     }
+      
+      std::cerr << "cec 3\n"
+
 
     std::vector<EdgePoint*> & outerEllipsePoints = candidate._outerEllipsePoints;
     cctag::numerical::geometry::Ellipse & outerEllipse = candidate._outerEllipse;
@@ -215,6 +223,9 @@ static void completeFlowComponent(
         distMax = distFinal;
       }
     }
+      
+      std::cerr << "cec 4\n"
+
 
     SmFinal = numerical::medianRef(vDistFinal);
 
@@ -242,6 +253,9 @@ static void completeFlowComponent(
       tbb::mutex::scoped_lock lock(G_InsertMutex);
       vCandidateLoopTwo.push_back(candidate);
     }
+      
+      std::cerr << "cec 5\n"
+
 
 #ifdef CCTAG_SERIALIZE
     // Add children to output the filtering results (from outlierRemoval)
