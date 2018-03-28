@@ -1198,6 +1198,9 @@ int identify_step_1(
     CCTAG_COUT_OPTIM("Time in subsampling: " << spendTime << " ms");
   )
 #endif
+    
+    if (outerpoints.size<5)
+        cout:cerr < "outerpoints error"
   
 
   assert ( outerPoints.size() >= 5 );
