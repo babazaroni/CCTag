@@ -42,7 +42,9 @@ endif()
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall ")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g ")
+
 
 # set the path where we can find the findXXX.cmake
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
