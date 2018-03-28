@@ -267,6 +267,9 @@ static void completeFlowComponent(
                                     *(candidate._seed), params._nCircles);
     CCTagFileDebug::instance().outputFlowComponentInfos(flowComponent);
 #endif
+      
+      std::cerr << "cec 6\n";
+
 
   }
   catch (cv::Exception& e)
@@ -277,6 +280,9 @@ static void completeFlowComponent(
   {
     DO_TALK( CCTAG_COUT_DEBUG( "Exception raised in the second main loop." ); )
   }
+    
+    std::cerr << "cec 7\n";
+
 }
 
 /* Brief: Aims to assemble two flow components if they lie on the same image CCTag
