@@ -10,7 +10,7 @@ project(CCTag VERSION 1.0.0 LANGUAGES C CXX)
 option(CCTAG_SERIALIZE "Store all the output" OFF)
 option(VISUAL_DEBUG "Enable visual debug" OFF)
 option(CCTAG_NO_COUT "Disable output stream" ON)
-option(WITH_CUDA "Compile the library with CUDA support" ON)
+option(WITH_CUDA "Compile the library with CUDA support" OFF)
 
 option(CCTAG_USE_POSITION_INDEPENDENT_CODE "Generate position independent code." ON)
 option(CCTAG_ENABLE_SIMD_AVX2 "Enable AVX2 optimizations" OFF)
