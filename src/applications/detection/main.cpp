@@ -70,7 +70,7 @@ bool isInteger(std::string &s)
  * @param[in] markers The list of markers to draw.
  * @param[out] image The image in which to draw the markers.
  */
-void drawMarkers(const boost::ptr_list<CCTag> &markers, cv::Mat &image)
+void drawMarkers(const boost::ptr_list<CCTag> &markers, cv::Mat &image,bool drawAll = true)
 {
   for(const cctag::CCTag & marker : markers)
   {
@@ -85,6 +85,8 @@ void drawMarkers(const boost::ptr_list<CCTag> &markers, cv::Mat &image)
     }
     else
     {
+      if (drawAll == false)
+	continue;
       const cv::Scalar color = cv::Scalar(0, 0, 255 , 255);
       cv::circle(image, center, radius, color, 2);
       cv::putText(image, std::to_string(marker.id()), center, cv::FONT_HERSHEY_SIMPLEX, fontSize, color, 3);
@@ -106,7 +108,7 @@ void drawMarkers(const boost::ptr_list<CCTag> &markers, cv::Mat &image)
  * @param[out] debugFileName The filename for the image to save with the detected 
  * markers.
  */
-void detection(std::size_t frameId,
+int  detection(std::size_t frameId,
                int pipeId,
                const cv::Mat & src,
                const cctag::Parameters & params,
@@ -174,6 +176,8 @@ void detection(std::size_t frameId,
   }
 
   std::cout << std::endl << nMarkers << " markers detected and identified" << std::endl;
+  
+  return nMarkers;
 }
 
 /*************************************************************/
@@ -462,6 +466,16 @@ int main(int argc, char** argv)
       files[frameId & 1].insert(std::pair<int, bfs::path>(frameId, fileInFolder));
       frameId++;
     }
+    
+    boost::filesystem::path mark_path = myPath;
+    
+    mark_path.append("marked");
+    
+    boost::filesystem::remove_all(mark_path);
+    
+    boost::filesystem::create_directory(mark_path);
+    
+    std::string debug = mark_path.string();
 
     tbb::parallel_for(0, 2, [&](size_t fileListIdx)
     {
@@ -484,11 +498,22 @@ int main(int argc, char** argv)
           int pipeId = (fileInFolder.first & 1);
           boost::ptr_list<CCTag> markers;
 #ifdef PRINT_TO_CERR
-          detection(fileInFolder.first, pipeId, imgGray, params, bank, markers, std::cerr, fileInFolder.second.stem().string());
+          int nMarkers = detection(fileInFolder.first, pipeId, imgGray, params, bank, markers, std::cerr, fileInFolder.second.stem().string());
 #else
-          detection(fileInFolder.first, pipeId, imgGray, params, bank, markers, outputFile, fileInFolder.second.stem().string());
+          int nMarkers = detection(fileInFolder.first, pipeId, imgGray, params, bank, markers, outputFile, fileInFolder.second.stem().string());
 #endif
           std::cerr << "Done processing image " << fileInFolder.second.string() << std::endl;
+	  
+	  if (nMarkers >0)
+	  {
+	    
+	    boost::filesystem::path mark_file_path = mark_path;
+	    mark_file_path.append(fileInFolder.second.filename().string());
+	    
+	    drawMarkers(markers, src,false);
+	    
+	    cv::imwrite(mark_file_path.string(),src);
+	  }
         }
       }
     });
