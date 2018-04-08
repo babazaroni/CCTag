@@ -70,7 +70,7 @@ bool isInteger(std::string &s)
  * @param[in] markers The list of markers to draw.
  * @param[out] image The image in which to draw the markers.
  */
-void drawMarkers(const boost::ptr_list<CCTag> &markers, cv::Mat &image,bool drawAll = true)
+void drawMarkers(const boost::ptr_list<CCTag> &markers, cv::Mat &image,bool drawAll = true,bool drawBox = false)
 {
   for(const cctag::CCTag & marker : markers)
   {
@@ -82,6 +82,16 @@ void drawMarkers(const boost::ptr_list<CCTag> &markers, cv::Mat &image,bool draw
       const cv::Scalar color = cv::Scalar(0, 255, 0 , 255);
       cv::circle(image, center, radius, color, 3);
       cv::putText(image, std::to_string(marker.id()), center, cv::FONT_HERSHEY_SIMPLEX, fontSize, color, 3);
+      
+      if (drawBox == true)
+      {
+	int x=0,y=0;
+	int width = image.size().width-2;
+	int height = image.size().height-2;
+	cv::Point pt1(x,y);
+	cv::Point pt2(x + width, y + height);
+	cv::rectangle(image,pt1,pt2,cv::Scalar(0,0,255,255),width/10);
+      }
     }
     else
     {
@@ -504,16 +514,14 @@ int main(int argc, char** argv)
 #endif
           std::cerr << "Done processing image " << fileInFolder.second.string() << std::endl;
 	  
+	  boost::filesystem::path mark_file_path = mark_path;
+	  mark_file_path.append(fileInFolder.second.filename().string());
 	  if (nMarkers >0)
 	  {
-	    
-	    boost::filesystem::path mark_file_path = mark_path;
-	    mark_file_path.append(fileInFolder.second.filename().string());
-	    
-	    drawMarkers(markers, src,false);
-	    
-	    cv::imwrite(mark_file_path.string(),src);
+	    drawMarkers(markers, src,false,true);
 	  }
+	  cv::imwrite(mark_file_path.string(),src);
+
         }
       }
     });
