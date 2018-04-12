@@ -46,6 +46,8 @@
 
 #define PRINT_TO_CERR
 
+#define SAVE_MOV
+
 using namespace cctag;
 using boost::timer;
 
@@ -383,6 +385,7 @@ int main(int argc, char** argv)
     CCTAG_COUT("*** Video mode ***");
     POP_INFO("looking at video " << myPath.string());
 
+
     // open video and check
     cv::VideoCapture video;
     if(useCamera)
@@ -395,6 +398,23 @@ int main(int argc, char** argv)
       CCTAG_COUT("Unable to open the video : " << cmdline._filename);
       return EXIT_FAILURE;
     }
+    
+#ifdef SAVE_MOV
+//cap = cv2.VideoCapture(0)
+
+//# Define the codec and create VideoWriter object
+//fourcc = cv2.VideoWriter_fourcc(*'XVID')
+//out = cv2.VideoWriter('output.avi',fourcc, 20.0, (640,480))
+
+  cv::VideoWriter outputVideo;
+  
+  int ex = static_cast<int>(video.get(CV_CAP_PROP_FOURCC));
+  cv::Size S = cv::Size((int) video.get(CV_CAP_PROP_FRAME_WIDTH),
+			(int) video.get(CV_CAP_PROP_FRAME_HEIGHT));
+  
+  outputVideo.open("someweird2.MOV",ex,video.get(CV_CAP_PROP_FPS)/4, S, true);
+#endif
+
 
     const std::string windowName = "Detection result";
     cv::namedWindow(windowName, cv::WINDOW_NORMAL);
@@ -442,8 +462,14 @@ int main(int argc, char** argv)
       if(frame.channels() == 1)
         cv::cvtColor(imgGray, frame, cv::COLOR_GRAY2BGRA);
       
-      drawMarkers(markers, frame);
+      drawMarkers(markers, frame, false, true);
       cv::imshow(windowName, frame);
+#ifdef SAVE_MOV
+      outputVideo << frame;
+#endif
+      
+      
+      
       if( cv::waitKey(delay) == 27 ) break;
       char key = (char) cv::waitKey(delay);
       // stop capturing by pressing ESC
@@ -457,6 +483,11 @@ int main(int argc, char** argv)
       
       ++frameId;
     }
+    
+#ifdef SAVE_MOV
+    outputVideo.release();
+#endif
+
 
   }
   else if(bfs::is_directory(myPath))
