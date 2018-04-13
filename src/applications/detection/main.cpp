@@ -47,6 +47,7 @@
 #define PRINT_TO_CERR
 
 #define SAVE_MOV
+#define DISPLAY_CIRCLE_WIDTH
 
 using namespace cctag;
 using boost::timer;
@@ -83,7 +84,17 @@ void drawMarkers(const boost::ptr_list<CCTag> &markers, cv::Mat &image,bool draw
     {
       const cv::Scalar color = cv::Scalar(0, 255, 0 , 255);
       cv::circle(image, center, radius, color, 3);
+      
+#ifdef DISPLAY_CIRCLE_WIDTH
+      
+      std::ostringstream ss;
+      ss << std::fixed << std::setprecision(1);
+      ss << std::max(marker.outerEllipse().a(),marker.outerEllipse().b()) + .05;
+      
+      cv::putText(image, ss.str(), center, cv::FONT_HERSHEY_SIMPLEX, fontSize, color, 3);
+#else
       cv::putText(image, std::to_string(marker.id()), center, cv::FONT_HERSHEY_SIMPLEX, fontSize, color, 3);
+#endif
       
       if (drawBox == true)
       {
