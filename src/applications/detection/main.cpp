@@ -400,7 +400,8 @@ int main(int argc, char** argv)
     // open video and check
     cv::VideoCapture video;
     if(useCamera)
-      video.open(std::atoi(cmdline._filename.c_str()));
+      video.open("nvcamerasrc ! video/x-raw(memory:NVMM), width=(int)640, height=(int)480, format=(string)I420, framerate=(fraction)24/1 ! nvvidconv flip-method=6 ! video/x-raw, format=(string)I420 ! videoconvert ! video/x-raw, format=(string)BGR ! appsink");
+//      video.open(std::atoi(cmdline._filename.c_str()));
     else
       video.open(cmdline._filename);
     
