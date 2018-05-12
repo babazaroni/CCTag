@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 //#include <immintrin.h>
-#include "neon2sse.h"
+#include "sse2neon.h"
 #include "Distance.hpp"
 
 namespace cctag {
