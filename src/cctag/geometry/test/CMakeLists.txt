@@ -1,1 +1,0 @@
-add_boost_test(SOURCE ellipse.cpp LINK CCTag PREFIX geometry)
